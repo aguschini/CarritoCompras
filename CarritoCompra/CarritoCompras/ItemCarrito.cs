@@ -9,7 +9,7 @@ namespace CarritoCompras
     class ItemCarrito
     {
         //atributos
-        private string producto { get; set; };
+        private Producto producto { get; set; };
         private string cantidad { get; private set; };
 
         //constructor
@@ -17,6 +17,18 @@ namespace CarritoCompras
         {
             this.producto = producto;
             this.cantidad = cantidad;
+        }
+        public bool ActualizarCantidad(int nuevaCantidad)
+        {
+            if (nuevaCantidad <= 0 || nuevaCantidad > Producto.stock)
+                return false;
+
+            Cantidad = nuevaCantidad;
+            return true;
+        }
+        public decimal CalcularSubtotal()
+        {
+            return Producto.precio * Cantidad;
         }
     }
 }
