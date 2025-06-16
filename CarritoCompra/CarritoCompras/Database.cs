@@ -1,4 +1,5 @@
 ﻿using System.Collections.Generic;
+using System.Linq;
 
 public static class Database
 {
@@ -53,10 +54,18 @@ public static class Database
 
     public static void FinalizarCompra()
     {
-        foreach (var item in carrito.ObtenerItems())
+        var items = carrito.ObtenerItems().ToList(); // Creamos una copia
+
+        // Actualizar stock
+        foreach (var item in items)
         {
             item.Producto.Stock -= item.Cantidad;
         }
+
+        // Generar ticket
+        tienda.AgregarTicket(items);
+
+        // Vaciar carrito
         carrito.Vaciar();
     }
 }

@@ -39,6 +39,12 @@ class Program
                     FinalizarCompra();
                     break;
                 case "9":
+                    VerHistorialCompras();
+                    break;
+                case "10":
+                    VerDetalleTicket();
+                    break;
+                case "11":
                     salir = true;
                     break;
                 default:
@@ -63,7 +69,9 @@ class Program
         Console.WriteLine("6. Ver contenido del carrito");
         Console.WriteLine("7. Ver total a pagar");
         Console.WriteLine("8. Finalizar compra");
-        Console.WriteLine("9. Salir");
+        Console.WriteLine("9. Historial de compras");
+        Console.WriteLine("10. Ver detalle de ticket");
+        Console.WriteLine("11. Salir");
         Console.Write("Seleccione una opción: ");
     }
 
@@ -215,5 +223,46 @@ class Program
         {
             Console.WriteLine("Compra cancelada.");
         }
+    }
+    static void VerHistorialCompras()
+    {
+        var tickets = Database.Tienda.Tickets;
+
+        if (!tickets.Any())
+        {
+            Console.WriteLine("\nNo hay tickets en el historial.");
+            return;
+        }
+
+        Console.WriteLine("\n=== HISTORIAL DE COMPRAS ===");
+        foreach (var ticket in tickets)
+        {
+            Console.WriteLine(ticket);
+        }
+    }
+
+    static void VerDetalleTicket()
+    {
+        VerHistorialCompras();
+
+        if (!Database.Tienda.Tickets.Any())
+            return;
+
+        Console.Write("\nIngrese el ID del ticket a ver: ");
+        if (!int.TryParse(Console.ReadLine(), out int idTicket))
+        {
+            Console.WriteLine("ID inválido.");
+            return;
+        }
+
+        var ticket = Database.Tienda.BuscarTicket(idTicket);
+
+        if (ticket == null)
+        {
+            Console.WriteLine("Ticket no encontrado.");
+            return;
+        }
+
+        Console.WriteLine(ticket.DetalleCompleto());
     }
 }
