@@ -1,44 +1,24 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading;
-using System.Threading.Tasks;
-
-namespace CarritoCompras
+﻿public class Producto
 {
-    class Producto
+    private static int ultimoCodigo = 0;
+
+    public int Codigo { get; }
+    public string Nombre { get; set; }
+    public decimal Precio { get; set; }
+    public int Stock { get; set; }
+    public Categoria Categoria { get; set; }
+
+    public Producto(string nombre, decimal precio, int stock, Categoria categoria)
     {
-        //atributos
-        private int ultimoCodigo = 0;
-        private int codigo { get; set; }
-        private string nombre { get; set; }
-        private float precio { get; set; }
-        private int stock { get; set; }
-        private Categoria categoria { get; set; }
+        Codigo = ++ultimoCodigo;
+        Nombre = nombre;
+        Precio = precio;
+        Stock = stock;
+        Categoria = categoria;
+    }
 
-        //constructor
-        public void producto(int codigo, string nombre, float precio, string stock, Categoria categoria)
-        {
-            this.codigo = Interlocked.Increment(ref ultimoCodigo);
-            this.nombre = nombre;
-            this.precio = precio;
-            this.stock = stock;
-            this.categoria = categoria;
-        }
-
-        public int ReducirStock(int cantidad)
-        {
-            if (cantidad <= 0 || cantidad > stock)
-                return false;
-
-            stock -= cantidad;
-            return true;
-        }
-        public void AumentarStock(int cantidad)
-        {
-            if (cantidad > 0)
-                stock += cantidad;
-        }
+    public override string ToString()
+    {
+        return $"[{Codigo}] {Nombre} - ${Precio} (Stock: {Stock}) - Categoría: {Categoria.Nombre}";
     }
 }

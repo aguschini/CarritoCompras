@@ -1,34 +1,31 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿
 
-namespace CarritoCompras
+public class ItemCarrito
 {
-    class ItemCarrito
+    public Producto Producto { get; }
+    public int Cantidad { get; set; }
+
+    public ItemCarrito(Producto producto, int cantidad)
     {
-        //atributos
-        private Producto producto { get; set; };
-        private string cantidad { get; private set; };
+        Producto = producto;
+        Cantidad = cantidad;
+    }
 
-        //constructor
-        public void itemcarrito(string producto, string cantidad)
-        {
-            this.producto = producto;
-            this.cantidad = cantidad;
-        }
-        public bool ActualizarCantidad(int nuevaCantidad)
-        {
-            if (nuevaCantidad <= 0 || nuevaCantidad > Producto.stock)
-                return false;
+    public decimal Subtotal()
+    {
+        decimal subtotal = Producto.Precio * Cantidad;
 
-            Cantidad = nuevaCantidad;
-            return true;
-        }
-        public decimal CalcularSubtotal()
+        // Aplicar descuento si compra 5 o más unidades
+        if (Cantidad >= 5)
         {
-            return Producto.precio * Cantidad;
+            subtotal *= 0.85m; // 15% de descuento
         }
+
+        return subtotal;
+    }
+
+    public override string ToString()
+    {
+        return $"{Producto.Nombre} x{Cantidad} = ${Subtotal()}";
     }
 }

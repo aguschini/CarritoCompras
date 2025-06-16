@@ -1,70 +1,44 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
-namespace CarritoCompras
+public class Carrito
 {
-    class Carrito
+    private List<ItemCarrito> items = new List<ItemCarrito>();
+
+    public void AgregarItem(Producto producto, int cantidad)
     {
-        private List<ItemCarrito> _items;
+        // Verificar si el producto ya está en el carrito
+        var itemExistente = items.FirstOrDefault(i => i.Producto.Codigo == producto.Codigo);
 
-        public IReadOnlyList<ItemCarrito> Items => _items.AsReadOnly();
-        public void carrito(List<ItemCarrito> items)
+        if (itemExistente != null)
         {
-            _items = new List<ItemCarrito>();
+            itemExistente.Cantidad += cantidad;
         }
-        public bool AgregarItem(Producto producto, int cantidad)
+        else
         {
-            if (producto == null || cantidad <= 0 || cantidad > producto.Stock)
-                return false;
-
-            var itemExistente = _items.FirstOrDefault(i => i.Producto.Codigo == producto.Codigo);
-
-            if (itemExistente != null)
-            {
-                if (!itemExistente.ActualizarCantidad(itemExistente.Cantidad + cantidad))
-                    return false;
-            }
-            else
-            {
-                _items.Add(new ItemCarrito(producto, cantidad));
-            }
-
-            return true;
+            items.Add(new ItemCarrito(producto, cantidad));
         }
+    }
 
-        public bool RemoverItem(int codigoProducto)
-        {
-            var item = _items.FirstOrDefault(i => i.Producto.Codigo == codigoProducto);
-            if (item == null)
-                return false;
+    public void EliminarItem(int codigoProducto)
+    {
+        items.RemoveAll(i => i.Producto.Codigo == codigoProducto);
+    }
 
-            return _items.Remove(item);
-        }
+    public decimal CalcularTotal()
+    {
+        decimal subtotal = items.Sum(i => i.Subtotal());
+        decimal iva = subtotal * 0.21m;
+        return subtotal + iva;
+    }
 
-        public decimal CalcularTotal()
-        {
-            return _items.Sum(item => item.CalcularSubtotal());
-        }
+    public List<ItemCarrito> ObtenerItems()
+    {
+        return new List<ItemCarrito>(items);
+    }
 
-        public bool RealizarCompra()
-        {
-
-            foreach (var item in _items)
-            {
-                if (item.Cantidad > item.Producto.Stock)
-                    return false;
-            }
-
-            foreach (var item in _items)
-            {
-                item.Producto.ReducirStock(item.Cantidad);
-            }
-
-            _items.Clear();
-            return true;
-        }
+    public void Vaciar()
+    {
+        items.Clear();
     }
 }
