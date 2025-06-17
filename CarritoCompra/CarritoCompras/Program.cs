@@ -132,7 +132,8 @@ class Program
             return;
         }
 
-        Console.Write("Ingrese la cantidad: ");
+        Console.Write("\nSi lleva 5 o más de un mismo producto tiene un 15% de descuento en el producto seleccionado");
+        Console.Write("\nIngrese la cantidad: ");
         if (!int.TryParse(Console.ReadLine(), out int cantidad) || cantidad <= 0)
         {
             Console.WriteLine("Cantidad inválida.");

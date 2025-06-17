@@ -54,18 +54,18 @@ public static class Database
 
     public static void FinalizarCompra()
     {
-        var items = carrito.ObtenerItems().ToList(); // Creamos una copia
+        var items = carrito.ObtenerItems().ToList();
 
-        // Actualizar stock
+        // Actualiza stock
         foreach (var item in items)
         {
             item.Producto.Stock -= item.Cantidad;
         }
 
-        // Generar ticket
+        // Genera ticket
         tienda.AgregarTicket(items);
 
-        // Vaciar carrito
+        // Vacia carrito
         carrito.Vaciar();
     }
 }

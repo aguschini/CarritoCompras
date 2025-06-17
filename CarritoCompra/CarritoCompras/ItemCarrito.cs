@@ -15,10 +15,10 @@ public class ItemCarrito
     {
         decimal subtotal = Producto.Precio * Cantidad;
 
-        // Aplicar descuento si compra 5 o más unidades
+        // Aplica descuento del 15% si compra 5 o más unidades
         if (Cantidad >= 5)
         {
-            subtotal *= 0.85m; // 15% de descuento
+            subtotal *= 0.85m;
         }
 
         return subtotal;
